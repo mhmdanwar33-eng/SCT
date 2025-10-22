@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Set up Java (17+ recommended)
+      # 2️⃣ Set up Java (21)
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -29,20 +29,24 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          # ⚠️ FIX: Temporarily change the cache key (e.g., add -v1) to force a cache miss.
+          # This ensures the corrupted cucumber-reporting plugin is not restored.
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-v1
           restore-keys: |
             ${{ runner.os }}-maven-
 
       # 4️⃣ Run Maven tests in headless mode
-      # Make sure your Selenium code reads -Dheadless property
       - name: Run Cucumber Selenium Tests
         run: |
-          mvn clean test -Dheadless=true
+          # ⚠️ FIX: Added -U flag to force dependency updates/redownloads.
+          mvn clean test -Dheadless=true -U
 
       # 5️⃣ Generate HTML report from cucumber.json
       - name: Generate Cucumber HTML Report
         run: |
-          mvn net.masterthought:cucumber-reporting:generate
+          # ⚠️ FIX: Added -U flag here as well to ensure a clean plugin download/invocation.
+          # This command will trigger the plugin execution.
+          mvn net.masterthought:cucumber-reporting:generate -U
 
       # 6️⃣ Upload HTML report
       - name: Upload Cucumber HTML Report
