@@ -59,4 +59,24 @@
           <version>6.3.2</version>
       </dependency>
   </dependencies>
+    <plugin>
+        <groupId>net.masterthought</groupId>
+        <artifactId>maven-cucumber-reporting</artifactId>
+        <version>5.7.0</version>
+        <executions>
+            <execution>
+                <id>generate-cucumber-report</id>
+                <phase>verify</phase>
+                <goals>
+                    <goal>generate</goal>
+                </goals>
+                <configuration>
+                    <projectName>JPETStore</projectName>
+                    <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
+                    <outputDirectory>${project.build.directory}/cucumber-html-report</outputDirectory>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+
 </project>
