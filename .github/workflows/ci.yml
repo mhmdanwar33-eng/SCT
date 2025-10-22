@@ -28,7 +28,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4️⃣ 🆕 NEW STEP: Manually delete the corrupted plugin folder
       - name: Delete Corrupted Plugin from Cache
         # This command forcefully removes the specific folder for the reporting plugin.
         # This guarantees Maven MUST download a fresh copy.
