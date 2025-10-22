@@ -37,7 +37,12 @@ jobs:
           mvn clean test -Dheadless=true
           echo "Tests completed. Listing target folder:"
           ls -R target || true
-      
+
+      - name: List target folder contents
+        run: |
+          echo "Contents of target directory after tests:"
+          ls -l target || true
+          
 
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
