@@ -32,7 +32,12 @@ jobs:
 
 
       - name: Run Cucumber Selenium Tests
-        run: mvn clean test -Dheadless=true
+        run: |
+          echo "🚀 Starting tests..."
+          mvn clean test -Dheadless=true
+          echo "Tests completed. Listing target folder:"
+          ls -R target || true
+      
 
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
