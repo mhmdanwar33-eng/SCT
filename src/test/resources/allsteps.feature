@@ -1,4 +1,4 @@
-Feature: User Registration, User login , User add to car a product
+Feature: User Registration, User login , User add to cart a product
 
   Scenario: user register
     Given user on registration page

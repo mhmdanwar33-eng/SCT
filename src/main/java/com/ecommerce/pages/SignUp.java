@@ -6,9 +6,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.nio.channels.SelectableChannel;
+import java.time.Duration;
 
 public class SignUp {
     WebDriver driver;
@@ -32,6 +35,7 @@ public class SignUp {
     By mylist = By.xpath("//input[contains(@name, \"account.listOption\")]");
     By myBanner = By.xpath("//input[contains(@name, \"account.bannerOption\")]");
     By submit = By.xpath("//input[contains(@type, \"submit\")][@value=\"Save Account Information\"]");
+    By aftersubmit = By.xpath("//*[@id='WelcomeContent']");
 
     public SignUp(WebDriver driver) {
         this.driver = driver;
@@ -77,6 +81,9 @@ public class SignUp {
         driver.findElement(submit).click();
 
     }
+    public WebElement aftersubmit() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        return wait.until(ExpectedConditions.presenceOfElementLocated(aftersubmit));    }
 
 
 }

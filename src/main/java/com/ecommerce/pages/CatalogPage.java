@@ -15,7 +15,7 @@ public class CatalogPage {
     By GoldFish= By.xpath("//a[contains(@href,\"/actions/Catalog.action?viewProduct=&productId=FI-FW-02\")]");
     By maleGoldFish=By.xpath("//a[contains(@href, \"/actions/Catalog.action?viewItem=&itemId=EST-20\")]");
     By addtoCart = By.xpath("//a[contains(@class, \"Button\")]");
-
+    By CartPageWelcome = By.xpath("//div[contains(@id,\"Cart\")]/h2");
 
     public void openFishCategory(){
         driver.findElement(fishCategory).click();
@@ -29,8 +29,8 @@ public class CatalogPage {
     public void clickAddtoCart(){
         driver.findElement(addtoCart).click();
     }
-    public boolean verifyItemInCart() {
-        return driver.getPageSource().contains("Sub Total");
+    public String getCartPageWelcome(){
+        return driver.findElement(CartPageWelcome).getText();
     }
 
 }
