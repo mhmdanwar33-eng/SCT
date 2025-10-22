@@ -42,6 +42,12 @@
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-core</artifactId>
+            <version>7.15.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
             <artifactId>cucumber-testng</artifactId>
             <version>7.15.0</version>
         </dependency>
@@ -53,7 +59,7 @@
             <version>6.3.2</version>
         </dependency>
 
-        <!-- Cucumber Reporting (library, not plugin) -->
+        <!-- Cucumber Reporting Library -->
         <dependency>
             <groupId>net.masterthought</groupId>
             <artifactId>cucumber-reporting</artifactId>
@@ -63,9 +69,8 @@
 
     <build>
         <plugins>
-            <!-- Compiler Plugin -->
+            <!-- Maven Compiler Plugin -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
@@ -74,23 +79,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Surefire for TestNG -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                        <include>**/*Tests.java</include>
-                    </includes>
-                    <systemPropertyVariables>
-                        <headless>${headless}</headless>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-
-            <!-- Exec Plugin to run cucumber-reporting -->
+            <!-- Exec Maven Plugin to generate Cucumber HTML report -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
