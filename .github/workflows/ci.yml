@@ -5,6 +5,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  # Bonus: Add a workflow_dispatch event for manual runs
+  workflow_dispatch:
 
 jobs:
   test:
@@ -32,8 +34,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      # 4️⃣ Install Browser (REQUIRED for Selenium to run)
+      - name: Setup Chrome/Chromedriver
+        uses: browser-actions/setup-chrome@latest
+        with:
+          # This action ensures Chrome and the correct Chromedriver version are installed
+          # and correctly added to the PATH for the tests to find.
+          # If your tests use WebDriverManager, this step might be optional,
+          # but it's the safest way to guarantee the browser is available.
+          token: ${{ secrets.GITHUB_TOKEN }} # Use for rate limiting
 
       # 5️⃣ Run Maven tests in headless mode
+      # NOTE: Ensure your test code reads the 'headless' property, e.g., System.getProperty("headless")
       - name: Run Cucumber Selenium Tests
         run: |
           mvn clean test -Dheadless=true
@@ -42,5 +54,10 @@ jobs:
       - name: Upload Cucumber HTML Report
         uses: actions/upload-artifact@v4
         with:
-          name: cucumber-html-report
+          # Change the file name to the standard one for HTML reports (if you use Maven Cucumber Reporting)
+          # A common path is 'target/site/cucumber-reporting/cucumber-html-reports/overview-features.html'
+          # Check your project's configuration and adjust the path accordingly.
+          name: jpetstore-test-report
           path: target/cucumber-reports.html
+          # The path 'target/cucumber-reports.html' is a placeholder.
+          # You must replace it with the actual path to your HTML report file.
