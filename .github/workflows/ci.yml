@@ -1,4 +1,4 @@
-name: 🧪 Cucumber Selenium CI
+name: Cucumber Selenium CI
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
 
       - name: Run Cucumber Selenium Tests
         run: |
-          echo "🚀 Starting tests..."
+          echo "Starting tests..."
           mvn clean test -Dheadless=true
           echo "Tests completed. Listing target folder:"
           ls -R target || true

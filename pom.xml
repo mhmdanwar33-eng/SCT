@@ -66,7 +66,7 @@
                 <version>3.1.2</version>
                 <configuration>
                     <includes>
-                        <include>**/AllTestsRunner.java</include>  <!-- ✅ force-runner -->
+                        <include>**/AllTestsRunner.java</include>
                     </includes>
                     <systemPropertyVariables>
                         <headless>${headless}</headless>
