@@ -34,15 +34,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4️⃣ Install Browser (REQUIRED for Selenium to run)
-      - name: Setup Chrome/Chromedriver
-        uses: browser-actions/setup-chrome@latest
-        with:
-          # This action ensures Chrome and the correct Chromedriver version are installed
-          # and correctly added to the PATH for the tests to find.
-          # If your tests use WebDriverManager, this step might be optional,
-          # but it's the safest way to guarantee the browser is available.
-          token: ${{ secrets.GITHUB_TOKEN }} # Use for rate limiting
 
       # 5️⃣ Run Maven tests in headless mode
       # NOTE: Ensure your test code reads the 'headless' property, e.g., System.getProperty("headless")
