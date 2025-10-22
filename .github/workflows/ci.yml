@@ -1,9 +1,19 @@
 name: 🧪 Cucumber Selenium CI
-# ... (on and jobs sections remain the same) ...
+
+# 1️⃣ EVENT TRIGGERS (Fixes "No event triggers defined in on" error)
+on:
+  push:
+    # Triggers on pushes to the main branch
+    branches: [ main ]
+  pull_request:
+    # Triggers on PRs targeting the main branch
+    branches: [ main ]
+  workflow_dispatch:
+  # Allows for manual runs via the GitHub Actions UI (Bonus requirement)
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # GitHub-hosted runner
 
     steps:
       # 1️⃣ Checkout repository
@@ -23,32 +33,35 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2
-          # ⚠️ Use a unique key for now to ensure we don't restore the bad cache
+          # ⚠️ Use a unique key for now (e.g., -clean-v2) to forcibly ignore
+          # any old, corrupted cache and ensure a fresh download.
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-clean-v2
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Delete Corrupted Plugin from Cache
-        # This command forcefully removes the specific folder for the reporting plugin.
-        # This guarantees Maven MUST download a fresh copy.
+      # 4️⃣ Delete Corrupted Plugin from Cache
+      - name: Delete Corrupted Plugin (cucumber-reporting)
+        # This step guarantees the corrupted file is removed before Maven tries to use it.
         run: |
           rm -rf ~/.m2/repository/net/masterthought/cucumber-reporting/5.10.1
 
-      # 5️⃣ Run Maven tests in headless mode
+      # 5️⃣ Run Maven tests in headless mode (WebDriverManager handles the driver)
       - name: Run Cucumber Selenium Tests
         run: |
-          # Use -U (Update) to confirm fresh downloads
+          # The -U flag forces Maven to check for updates and redownload dependencies/plugins.
           mvn clean test -Dheadless=true -U
 
       # 6️⃣ Generate HTML report from cucumber.json
       - name: Generate Cucumber HTML Report
         run: |
-          # Use -U for the plugin execution as well
+          # Execute the cucumber-reporting plugin to generate the final HTML report.
           mvn net.masterthought:cucumber-reporting:generate -U
 
-      # 7️⃣ Upload HTML report
+      # 7️⃣ Upload HTML report (Expected Deliverable)
       - name: Upload Cucumber HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: jpetstore-test-report
+          # NOTE: Verify this path matches the output path of the masterthought plugin.
           path: target/cucumber-html-report/**
+          retention-days: 7
