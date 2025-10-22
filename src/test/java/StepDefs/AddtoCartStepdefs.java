@@ -2,6 +2,7 @@ package StepDefs;
 
 import com.ecommerce.pages.CatalogPage;
 import com.ecommerce.pages.LoginPage;
+import com.ecommerce.utils.DriverFactory;
 import com.ecommerce.utils.TestData;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -10,18 +11,27 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
+
 public class AddtoCartStepdefs {
 
-    WebDriver driver;
+    private WebDriver driver;
     CatalogPage catalogPage;
     LoginPage loginPage;
 
+    public AddtoCartStepdefs() {
+        this.driver = DriverFactory.getDriver();
+        this.catalogPage = new CatalogPage(driver);
+        this.loginPage = new LoginPage(driver);
+    }
+
     @Given("User is logged in")
     public void userIsLoggedIn() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        catalogPage = new CatalogPage(driver);
-        loginPage = new LoginPage(driver);
+        //driver = new ChromeDriver();
+        //driver.manage().window().maximize();
+//        driver = DriverFactory.getDriver();
+//
+//        catalogPage = new CatalogPage(driver);
+//        loginPage = new LoginPage(driver);
         loginPage.OpenloginPage();
         loginPage.loginwithCredentials(TestData.registeredUsername, TestData.registeredPassword);
         loginPage.loggedin();
@@ -40,7 +50,6 @@ public class AddtoCartStepdefs {
     @Then("user add product to Cart")
     public void userAddProductToCart() {
         Assert.assertEquals( catalogPage.getCartPageWelcome(),"Shopping Cart");
-        driver.quit();
 
     }
 }

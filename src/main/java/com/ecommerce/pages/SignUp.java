@@ -1,5 +1,6 @@
 package com.ecommerce.pages;
 
+import com.ecommerce.utils.DriverFactory;
 import io.cucumber.java.eo.Se;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -14,7 +15,9 @@ import java.nio.channels.SelectableChannel;
 import java.time.Duration;
 
 public class SignUp {
-    WebDriver driver;
+   // WebDriver driver;
+   private WebDriver driver;
+
 
 
     By username = By.xpath("//input[contains(@name, \"username\")]");
@@ -38,7 +41,7 @@ public class SignUp {
     By aftersubmit = By.xpath("//*[@id='WelcomeContent']");
 
     public SignUp(WebDriver driver) {
-        this.driver = driver;
+        this.driver = DriverFactory.getDriver();
     }
 
     public void filluserData(String name,  String pass) {

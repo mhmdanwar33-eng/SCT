@@ -1,5 +1,6 @@
 package com.ecommerce.pages;
 
+import com.ecommerce.utils.DriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,7 +8,7 @@ import org.openqa.selenium.WebElement;
 
 public class LoginPage {
 
-    WebDriver driver;
+    private WebDriver driver;
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
