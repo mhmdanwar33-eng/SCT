@@ -65,6 +65,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
+                    <includes>
+                        <include>**/AllTestsRunner.java</include>  <!-- ✅ force-runner -->
+                    </includes>
                     <systemPropertyVariables>
                         <headless>${headless}</headless>
                     </systemPropertyVariables>
