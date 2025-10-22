@@ -61,27 +61,30 @@
   </dependencies>
     <build>
         <plugins>
-            <!-- Maven Cucumber Reporting plugin -->
             <plugin>
-                <groupId>net.masterthought</groupId>
-                <artifactId>maven-cucumber-reporting</artifactId>
-                <version>5.7.0</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
-                        <id>generate-cucumber-report</id>
+                        <id>generate-cucumber-html-report</id>
                         <phase>verify</phase>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>java</goal>
                         </goals>
                         <configuration>
-                            <projectName>JPETStore</projectName>
-                            <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
-                            <outputDirectory>${project.build.directory}/cucumber-html-report</outputDirectory>
+                            <mainClass>net.masterthought.cucumber.ReportBuilder</mainClass>
+                            <arguments>
+                                <argument>target/cucumber.json</argument>
+                                <argument>-o</argument>
+                                <argument>target/cucumber-html-report</argument>
+                            </arguments>
+                            <classpathScope>test</classpathScope>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <!-- other plugins if needed -->
         </plugins>
     </build>
+
 </project>
