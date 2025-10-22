@@ -34,18 +34,6 @@ jobs:
             ${{ runner.os }}-maven-
 
       # 4️⃣ Install ChromeDriver
-      - name: Install ChromeDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-chromedriver
-          # Force symlink to avoid "File exists" error
-          sudo ln -sf /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
-
-      # 5️⃣ Verify Chrome & ChromeDriver
-      - name: Verify Chrome & ChromeDriver
-        run: |
-          google-chrome --version
-          chromedriver --version
 
       # 6️⃣ Run Maven tests in headless mode
       # Make sure your Selenium code reads -Dheadless property
