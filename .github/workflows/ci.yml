@@ -33,18 +33,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4️⃣ Install ChromeDriver
-
-      # 6️⃣ Run Maven tests in headless mode
+      # 4️⃣ Run Maven tests in headless mode
       # Make sure your Selenium code reads -Dheadless property
       - name: Run Cucumber Selenium Tests
         run: |
           mvn clean test -Dheadless=true
 
-      # 7️⃣ Upload HTML report
-  - name: Upload Cucumber HTML Report
-    uses: actions/upload-artifact@v4
-    with:
-      name: jpetstore-test-report
-      path: target/cucumber-html-report/**
+      # 5️⃣ Generate HTML report from cucumber.json
+      - name: Generate Cucumber HTML Report
+        run: |
+          mvn net.masterthought:cucumber-reporting:generate
 
+      # 6️⃣ Upload HTML report
+      - name: Upload Cucumber HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jpetstore-test-report
+          path: target/cucumber-html-report/**
