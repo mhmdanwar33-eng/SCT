@@ -2,6 +2,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
@@ -10,7 +11,6 @@
     <packaging>jar</packaging>
 
     <name>SCTP</name>
-    <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -42,12 +42,6 @@
         </dependency>
         <dependency>
             <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-core</artifactId>
-            <version>7.15.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
             <artifactId>cucumber-testng</artifactId>
             <version>7.15.0</version>
         </dependency>
@@ -59,7 +53,7 @@
             <version>6.3.2</version>
         </dependency>
 
-        <!-- Cucumber Reporting Library -->
+        <!-- Cucumber Reporting (library only) -->
         <dependency>
             <groupId>net.masterthought</groupId>
             <artifactId>cucumber-reporting</artifactId>
@@ -69,40 +63,33 @@
 
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin -->
+            <!-- Compiler plugin -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
+                    <source>21</source>
+                    <target>21</target>
                 </configuration>
             </plugin>
 
-            <!-- Exec Maven Plugin to generate Cucumber HTML report -->
+            <!-- Surefire plugin for TestNG -->
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>generate-cucumber-html-report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <configuration>
-                            <mainClass>net.masterthought.cucumber.ReportBuilder</mainClass>
-                            <arguments>
-                                <argument>target/cucumber.json</argument>
-                                <argument>-o</argument>
-                                <argument>target/cucumber-html-report</argument>
-                            </arguments>
-                            <classpathScope>test</classpathScope>
-                        </configuration>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test*.java</include>
+                        <include>**/*Tests*.java</include>
+                        <include>**/*TestCase*.java</include>
+                    </includes>
+                    <systemPropertyVariables>
+                        <headless>${headless}</headless>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>
