@@ -1,11 +1,5 @@
 name: 🧪 Cucumber Selenium CI
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
+# ... (on and jobs sections remain the same) ...
 
 jobs:
   test:
@@ -29,26 +23,31 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2
-          # ⚠️ FIX: Temporarily change the cache key (e.g., add -v1) to force a cache miss.
-          # This ensures the corrupted cucumber-reporting plugin is not restored.
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-v1
+          # ⚠️ Use a unique key for now to ensure we don't restore the bad cache
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-clean-v2
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4️⃣ Run Maven tests in headless mode
+      # 4️⃣ 🆕 NEW STEP: Manually delete the corrupted plugin folder
+      - name: Delete Corrupted Plugin from Cache
+        # This command forcefully removes the specific folder for the reporting plugin.
+        # This guarantees Maven MUST download a fresh copy.
+        run: |
+          rm -rf ~/.m2/repository/net/masterthought/cucumber-reporting/5.10.1
+
+      # 5️⃣ Run Maven tests in headless mode
       - name: Run Cucumber Selenium Tests
         run: |
-          # ⚠️ FIX: Added -U flag to force dependency updates/redownloads.
+          # Use -U (Update) to confirm fresh downloads
           mvn clean test -Dheadless=true -U
 
-      # 5️⃣ Generate HTML report from cucumber.json
+      # 6️⃣ Generate HTML report from cucumber.json
       - name: Generate Cucumber HTML Report
         run: |
-          # ⚠️ FIX: Added -U flag here as well to ensure a clean plugin download/invocation.
-          # This command will trigger the plugin execution.
+          # Use -U for the plugin execution as well
           mvn net.masterthought:cucumber-reporting:generate -U
 
-      # 6️⃣ Upload HTML report
+      # 7️⃣ Upload HTML report
       - name: Upload Cucumber HTML Report
         uses: actions/upload-artifact@v4
         with:
