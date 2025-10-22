@@ -32,15 +32,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4️⃣ Install Chrome & ChromeDriver
-      - name: Install Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-
-      - name: Install ChromeDriver
-        run: |
-          sudo apt-get install -y chromium-chromedriver
 
       # 5️⃣ Run Maven tests in headless mode
       - name: Run Cucumber Selenium Tests
